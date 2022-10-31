@@ -1,0 +1,39 @@
+services:
+    database:
+        image: postgres:15-alpine
+        networks:
+            - nodeforum
+        environment:
+            - POSTGRES_HOST_AUTH_METHOD=trust
+        volumes:
+            - nodeforum_db:/var/lib/postgresql/data
+
+    backend:
+        build:
+            context: ..
+            dockerfile: ./server.Dockerfile
+            tags:
+                - nodeforum/backend:latest
+        networks:
+            - nodeforum
+        environment:
+            - DATABASE_URL=postgresql://database:5432
+
+    frontend:
+        build:
+            context: ../..
+            dockerfile: ./client.Dockerfile
+            tags:
+                - nodeforum/frontend:latest
+        networks:
+            - nodeforum
+        environment:
+            - DATABASE_URL=postgresql://database:5432
+            - BACKEND_URL=http://backend:4000
+            - BACKEND_WS_URL=ws://backend:4000
+
+networks:
+    nodeforum:
+
+volumes:
+    nodeforum_db:

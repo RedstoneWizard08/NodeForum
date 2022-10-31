@@ -1,0 +1,105 @@
+$secondary-hover: rgba(255, 255, 255, 0.1);
+$primary-hover: rgba(0, 128, 128, 0.6);
+$primary-active: rgba(0, 128, 128, 1);
+
+.sidebar {
+    margin: 0.75% 0.5%;
+
+    width: 20%;
+
+    &--login,
+    &--categories {
+        background-color: #2f3130;
+
+        padding: 1.5% 1%;
+        border-radius: 8px;
+
+        width: 100%;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+
+        &:not(:first-child) {
+            margin-top: 4%;
+        }
+
+        &--item {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+
+            width: 88%;
+            height: 30px;
+            margin: 1% 0%;
+            padding: 2% 4%;
+
+            border: 1px solid transparent;
+            border-radius: 6px;
+            cursor: pointer;
+
+            transition: border-color 0.5s ease, background-color 0.5s ease, color 0.5s ease;
+
+            &:hover {
+                border-color: $primary-hover;
+                background-color: $primary-hover;
+            }
+
+            &.active {
+                border-color: $primary-active;
+                background-color: $primary-active;
+
+                &:hover {
+                    border-color: $primary-hover;
+                    background-color: $primary-hover;
+                }
+            }
+
+            & > i {
+                margin-right: 3%;
+            }
+
+            & > p {
+                margin-top: 8%;
+            }
+        }
+
+        &--link {
+            color: white;
+            text-decoration: none;
+            text-transform: none;
+
+            padding: 0.5% 0.75%;
+            margin: 2%;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 1px solid transparent;
+
+            width: 90%;
+            height: 30px;
+            text-align: center;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            transition: border-color 0.5s ease, background-color 0.5s ease, color 0.5s ease;
+
+            &.secondary:hover {
+                border-color: $secondary-hover;
+                background-color: $secondary-hover;
+            }
+
+            &.primary {
+                border-color: $primary-hover;
+
+                &:hover {
+                    background-color: $primary-hover;
+                }
+            }
+        }
+    }
+}

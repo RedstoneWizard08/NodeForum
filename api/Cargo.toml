@@ -1,0 +1,25 @@
+[package]
+name = "nodeforum"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+actix-http = "3.2.2"
+actix-service = "2.0.2"
+actix-web = "4.2.1"
+config = { version = "0.13.2", default-features = false, features = ["ini", "json", "ron", "rust-ini", "serde_json", "toml", "yaml", "yaml-rust"] }
+deadpool-postgres = { version = "0.10.3", features = ["serde"] }
+derive_more = "0.99.17"
+dotenv = "0.15.0"
+fakeit = "1.1.1"
+futures = { version = "0.3.25", features = ["futures-executor"] }
+pbkdf2 = "0.11.0"
+postgres = "0.19.4"
+rand = "0.8.5"
+regex = "1.6.0"
+serde = { version = "1.0.147", features = ["derive"] }
+tokio-pg-mapper = "0.2.0"
+tokio-pg-mapper-derive = "0.2.0"
+tokio-postgres = "0.7.7"

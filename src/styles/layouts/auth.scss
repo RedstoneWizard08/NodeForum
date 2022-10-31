@@ -1,0 +1,163 @@
+$secondary-hover: rgba(255, 255, 255, 0.1);
+$primary-hover: rgba(0, 128, 128, 0.6);
+
+.form {
+    &-auth-container {
+        width: 78%;
+        height: 100%;
+
+        margin: 0;
+        padding: 0;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &-auth {
+        width: 40% !important;
+        height: 70vh !important;
+
+        margin: 2%;
+        padding: 2%;
+
+        border-radius: 8px;
+        background-color: #2f3130;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+
+        p, input, button {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+        &-title {
+            margin-top: 12%;
+            margin-bottom: 0;
+        }
+
+        &-divider {
+            border: none;
+            border-bottom: 2px solid white;
+
+            width: 60%;
+            height: 4px;
+        }
+
+        &-input {
+            width: 80%;
+            height: 4%;
+
+            padding: 2%;
+            margin-top: 4%;
+
+            border: 1px solid white;
+            border-radius: 8px;
+
+            background-color: transparent;
+            color: white;
+
+            outline: none;
+
+            &.password {
+                width: calc(80% - 50px);
+                height: 47%;
+
+                padding-right: calc(2% + 50px);
+            }
+        }
+
+        &-password-group {
+            width: 100%;
+
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+        }
+
+        &-password-show {
+            width: 50px;
+            height: 84%;
+
+            padding: 2%;
+            margin-top: 4%;
+
+            background-color: transparent;
+            appearance: none;
+
+            border: 1px solid white;
+            cursor: pointer;
+            outline: none;
+
+            border-radius: 8px;
+
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            margin-left: -50px;
+
+            background-image: url("../../assets/eye-dark.svg");
+            background-repeat: no-repeat;
+            background-size: 70%;
+            background-position: 50% 50%;
+
+            transition: background-color 0.5s ease;
+
+            &:hover {
+                background-color: $primary-hover;
+            }
+
+            &.hidden {
+                background-image: url("../../assets/eye-slash-dark.svg");
+            }
+        }
+
+        &-submit {
+            font-size: 11.5pt;
+
+            padding: 2.5% 3%;
+            margin-top: 4%;
+
+            border: 1px solid $primary-hover;
+            border-radius: 8px;
+
+            background-color: transparent;
+            color: white;
+
+            outline: none;
+            cursor: pointer;
+
+            transition: color 0.5s ease, border-color 0.5s ease, background-color 0.5s ease;
+
+            &:hover {
+                background-color: $primary-hover;
+            }
+        }
+
+        &-button {
+            font-size: 11.5pt;
+
+            padding: 2.5% 3%;
+            margin-top: 4%;
+
+            border: 1px solid transparent;
+            border-radius: 8px;
+
+            background-color: transparent;
+            color: white;
+
+            outline: none;
+            cursor: pointer;
+
+            transition: color 0.5s ease, border-color 0.5s ease, background-color 0.5s ease;
+
+            &:hover {
+                border-color: $secondary-hover;
+                background-color: $secondary-hover;
+            }
+        }
+    }
+}
