@@ -6,6 +6,30 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: x86_64-unknown-linux-gnu
+            static_target: x86_64-unknown-linux-musl
+            name: amd64
+          
+          - target: aarch64-unknown-linux-gnu
+            static_target: aarch64-unknown-linux-musl
+            name: arm64
+          
+          - target: i686-unknown-linux-gnu
+            static_target: i686-unknown-linux-musl
+            name: i686
+          
+          - target: arm-unknown-linux-gnueabi
+            static_target: arm-unknown-linux-musleabi
+            name: arm
+          
+          - target: arm-unknown-linux-gnueabihf
+            static_target: arm-unknown-linux-musleabihf
+            name: armhf
+
     steps:
       - name: 📥 Checkout
         uses: actions/checkout@v3
@@ -17,49 +41,22 @@ jobs:
       
       - name: 🚀 Build the binaries
         run: |
+          # Install the system packages
+          sudo apt-get update
+          sudo apt-get -y install musl musl-tools musl-dev
+
+          # Create directories
           mkdir out
           cd packages/backend
 
-          # Build linux 64-bit targets
-          cargo build --release --target x86_64-unknown-linux-gnu
+          # Build the binaries
+          cargo build --release --target ${{ matrix.target }}
           RUSTFLAGS="-C target-feature=+crt-static" cargo build \
-            --release --target x86_64-unknown-linux-musl
-
-          # Build linux arm64 targets
-          cargo build --release --target aarch64-unknown-linux-gnu
-          RUSTFLAGS="-C target-feature=+crt-static" cargo build \
-            --release --target aarch64-unknown-linux-musl
-          
-          # Build linux 32-bit targets
-          cargo build --release --target i686-unknown-linux-gnu
-          RUSTFLAGS="-C target-feature=+crt-static" cargo build \
-            --release --target i686-unknown-linux-musl
-          
-          # Build linux arm32 targets
-          cargo build --release --target arm-unknown-linux-gnueabi
-          RUSTFLAGS="-C target-feature=+crt-static" cargo build \
-            --release --target arm-unknown-linux-musleabi
-
-          # Build linux armhf targets
-          cargo build --release --target arm-unknown-linux-gnueabihf
-          RUSTFLAGS="-C target-feature=+crt-static" cargo build \
-            --release --target arm-unknown-linux-musleabihf
+            --release --target ${{ matrix.static_target }}
 
           # Copy the binaries
-          cp target/x86_64-unknown-linux-gnu/release/nodeforum ../../out/nodeforum-amd64
-          cp target/x86_64-unknown-linux-musl/release/nodeforum ../../out/nodeforum-amd64-static
-
-          cp target/aarch64-unknown-linux-gnu/release/nodeforum ../../out/nodeforum-arm64
-          cp target/aarch64-unknown-linux-musl/release/nodeforum ../../out/nodeforum-arm64-static
-
-          cp target/i686-unknown-linux-gnu/release/nodeforum ../../out/nodeforum-i686
-          cp target/i686-unknown-linux-musl/release/nodeforum ../../out/nodeforum-i686-static
-
-          cp target/arm-unknown-linux-gnueabi/release/nodeforum ../../out/nodeforum-arm32
-          cp target/arm-unknown-linux-musleabi/release/nodeforum ../../out/nodeforum-arm32-static
-
-          cp target/arm-unknown-linux-gnueabihf/release/nodeforum ../../out/nodeforum-armhf
-          cp target/arm-unknown-linux-musleabihf/release/nodeforum ../../out/nodeforum-armhf-static
+          cp target/${{ matrix.target }}/release/nodeforum ../../out/nodeforum-${{ matrix.name }}
+          cp target/${{ matrix.static_target }}/release/nodeforum ../../out/nodeforum-${{ matrix.name }}-static
 
       - name: 📤 Upload artifacts
         uses: actions/upload-artifact@v3

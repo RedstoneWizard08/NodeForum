@@ -1,0 +1,68 @@
+name: Backend - Binary
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v3
+      
+      - name: 🔧 Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      
+      - name: 🚀 Build the binaries
+        run: |
+          mkdir out
+          cd packages/backend
+
+          # Build linux 64-bit targets
+          cargo build --release --target x86_64-unknown-linux-gnu
+          RUSTFLAGS="-C target-feature=+crt-static" cargo build \
+            --release --target x86_64-unknown-linux-musl
+
+          # Build linux arm64 targets
+          cargo build --release --target aarch64-unknown-linux-gnu
+          RUSTFLAGS="-C target-feature=+crt-static" cargo build \
+            --release --target aarch64-unknown-linux-musl
+          
+          # Build linux 32-bit targets
+          cargo build --release --target i686-unknown-linux-gnu
+          RUSTFLAGS="-C target-feature=+crt-static" cargo build \
+            --release --target i686-unknown-linux-musl
+          
+          # Build linux arm32 targets
+          cargo build --release --target arm-unknown-linux-gnueabi
+          RUSTFLAGS="-C target-feature=+crt-static" cargo build \
+            --release --target arm-unknown-linux-musleabi
+
+          # Build linux armhf targets
+          cargo build --release --target arm-unknown-linux-gnueabihf
+          RUSTFLAGS="-C target-feature=+crt-static" cargo build \
+            --release --target arm-unknown-linux-musleabihf
+
+          # Copy the binaries
+          cp target/x86_64-unknown-linux-gnu/release/nodeforum ../../out/nodeforum-amd64
+          cp target/x86_64-unknown-linux-musl/release/nodeforum ../../out/nodeforum-amd64-static
+
+          cp target/aarch64-unknown-linux-gnu/release/nodeforum ../../out/nodeforum-arm64
+          cp target/aarch64-unknown-linux-musl/release/nodeforum ../../out/nodeforum-arm64-static
+
+          cp target/i686-unknown-linux-gnu/release/nodeforum ../../out/nodeforum-i686
+          cp target/i686-unknown-linux-musl/release/nodeforum ../../out/nodeforum-i686-static
+
+          cp target/arm-unknown-linux-gnueabi/release/nodeforum ../../out/nodeforum-arm32
+          cp target/arm-unknown-linux-musleabi/release/nodeforum ../../out/nodeforum-arm32-static
+
+          cp target/arm-unknown-linux-gnueabihf/release/nodeforum ../../out/nodeforum-armhf
+          cp target/arm-unknown-linux-musleabihf/release/nodeforum ../../out/nodeforum-armhf-static
+
+      - name: 📤 Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: binaries
+          path: out/*
