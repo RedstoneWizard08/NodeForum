@@ -7,21 +7,24 @@ services:
             - POSTGRES_HOST_AUTH_METHOD=trust
         volumes:
             - nodeforum_db:/var/lib/postgresql/data
+        logging:
+          driver: none
 
     backend:
         build:
-            context: ..
+            context: .
             dockerfile: ./server.Dockerfile
             tags:
                 - nodeforum/backend:latest
         networks:
             - nodeforum
         environment:
-            - DATABASE_URL=postgresql://database:5432
+            - DB_HOST=database
+            - DB_PORT=5432
 
     frontend:
         build:
-            context: ../..
+            context: .
             dockerfile: ./client.Dockerfile
             tags:
                 - nodeforum/frontend:latest
