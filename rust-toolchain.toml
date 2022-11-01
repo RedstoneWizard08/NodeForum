@@ -1,0 +1,22 @@
+[toolchain]
+targets = [
+    # Linux 64-bit targets
+    "x86_64-unknown-linux-gnu",
+    "x86_64-unknown-linux-musl",
+
+    # Linux 32-bit targets
+    "i686-unknown-linux-gnu",
+    "i686-unknown-linux-musl",
+
+    # Linux arm64 targets
+    "aarch64-unknown-linux-gnu",
+    "aarch64-unknown-linux-musl",
+
+    # Linux arm32 targets
+    "arm-unknown-linux-gnueabi",
+    "arm-unknown-linux-musleabi",
+
+    # Linux armhf targets
+    "arm-unknown-linux-gnueabihf",
+    "arm-unknown-linux-musleabihf",
+]

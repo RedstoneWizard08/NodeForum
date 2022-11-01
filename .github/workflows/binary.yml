@@ -1,0 +1,54 @@
+name: Backend - Binary
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v3
+      
+      - name: 🔧 Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      
+      - name: 🚀 Build the binaries
+        run: |
+          # Build linux 64-bit targets
+          cargo build --release --target x86_64-unknown-linux-gnu
+          cargo build --release --target x86_64-unknown-linux-musl
+
+          # Build linux arm64 targets
+          cargo build --release --target aarch64-unknown-linux-gnu
+          cargo build --release --target aarch64-unknown-linux-musl
+          
+          # Build linux 32-bit targets
+          cargo build --release --target i686-unknown-linux-gnu
+          cargo build --release --target i686-unknown-linux-musl
+          
+          # Build linux arm32 targets
+          cargo build --release --target arm-unknown-linux-gnueabi
+          cargo build --release --target arm-unknown-linux-musleabi
+
+          # Build linux armhf targets
+          cargo build --release --target arm-unknown-linux-gnueabihf
+          cargo build --release --target arm-unknown-linux-musleabihf
+
+          # Copy the binaries
+          cp target/x86_64-unknown-linux-gnu/release/nodeforum nodeforum-amd64
+          cp target/x86_64-unknown-linux-musl/release/nodeforum nodeforum-amd64-static
+
+          cp target/aarch64-unknown-linux-gnu/release/nodeforum nodeforum-arm64
+          cp target/aarch64-unknown-linux-musl/release/nodeforum nodeforum-arm64-static
+
+          cp target/i686-unknown-linux-gnu/release/nodeforum nodeforum-i686
+          cp target/i686-unknown-linux-musl/release/nodeforum nodeforum-i686-static
+
+          cp target/arm-unknown-linux-gnueabi/release/nodeforum nodeforum-arm32
+          cp target/arm-unknown-linux-musleabi/release/nodeforum nodeforum-arm32-static
+
+          cp target/arm-unknown-linux-gnueabihf/release/nodeforum nodeforum-armhf
+          cp target/arm-unknown-linux-musleabihf/release/nodeforum nodeforum-armhf-static
