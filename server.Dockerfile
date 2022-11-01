@@ -20,10 +20,8 @@ ADD ./packages/backend /app
 WORKDIR /app
 
 # Compile NodeForum
-RUN mkdir -p /app/out && \
-    RUSTFLAGS="-C target-feature=+crt-static" cargo build \
-        --release --target $(uname -m)-unknown-linux-musl \
-        -Z unstable-options --out-dir /app/out
+RUN RUSTFLAGS="-C target-feature=+crt-static" cargo build \
+        --release --target $(uname -m)-unknown-linux-musl
 
 # Copy the binary
 RUN cp /app/target/$(uname -m)-unknown-linux-musl/release/nodeforum /app/nodeforum
